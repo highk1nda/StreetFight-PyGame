@@ -1,38 +1,36 @@
 import pygame
+from fighter import Fighter
 
 # Initialize pygame
 pygame.init()
 
 # Screen setup
-SCREEN_WIDTH = 1280
+SCREEN_WIDTH = 1520
 SCREEN_HEIGHT = 820
+FPS = 60
 display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Shadow Fight Prototype")
+pygame.display.set_caption("Medieval Mayhem")
 
-# define colors
-BLACK = (0, 0, 0)
-CYAN = (0, 255, 255)
-MAGENTA = (255, 0, 255)
-YELLOW = (255, 255, 0)
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-BACKGROUND_COLOR = (204, 204, 255)
+# Load background image
+background = pygame.image.load("forest.jpg").convert()  # BG for TEST_ONLY
+background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Define colors
+GREEN = (26, 66, 28)
 
 # Clock that controls FPS
 clock = pygame.time.Clock()
 
-# floor settings
-FLOOR_Y = 700
-FLOOR_HEIGHT = 300
+# Floor settings
+FLOOR_Y = 720
+FLOOR_HEIGHT = 100
 
-# player settings
+# Player settings
 speed = 5
 
-# player sizes
+# Player sizes
 PLAYER_WIDTH = 150
-PLAYER_HEIGHT = 300
+PLAYER_HEIGHT = 270
 CROUCH_WIDTH = 180
 CROUCH_HEIGHT = 210
 
@@ -40,78 +38,36 @@ CROUCH_HEIGHT = 210
 player1_rect = pygame.Rect(150, FLOOR_Y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT)
 player2_rect = pygame.Rect(600, FLOOR_Y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT)
 
+# Load spritesheets
+knight = pygame.image.load(
+    "Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight.png").convert_alpha()  # load the png sheet
+# Define amount of animation steps
+KNIGHT_ANIMATION_STEPS = [6, 8, 7, 10, 11, 4, 4, 4]  # x,y,z <-> frames per row in sheet
+# assign knight_test to be part of class Fighter
+knight_test = Fighter(PLAYER_WIDTH, FLOOR_Y - PLAYER_HEIGHT)
 # Game loop
 running = True
 while running:
-    clock.tick(60)  # ADJUST TO YOUR FRAMERATE
+    clock.tick(FPS)  # FPS
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
     # Key input
     keys = pygame.key.get_pressed()
 
-    # player 1 movement (WASD)
-    if keys[pygame.K_a]:
-        player1_rect.x -= speed
-    if keys[pygame.K_d]:
-        player1_rect.x += speed
-
-    # player 2 movement (arrow keys)
-    if keys[pygame.K_LEFT]:
-        player2_rect.x -= speed
-    if keys[pygame.K_RIGHT]:
-        player2_rect.x += speed
-
-    # player 1 crouch (S)
-    if keys[pygame.K_s]:
-        bottom = player1_rect.bottom
-        centerx = player1_rect.centerx
-        player1_rect.size = (CROUCH_WIDTH, CROUCH_HEIGHT)
-        player1_rect.centerx = centerx
-        player1_rect.bottom = bottom
-    else:
-        bottom = player1_rect.bottom
-        centerx = player1_rect.centerx
-        player1_rect.size = (PLAYER_WIDTH, PLAYER_HEIGHT)
-        player1_rect.centerx = centerx
-        player1_rect.bottom = bottom
-
-    # player 2 crouch (arrow down)
-    if keys[pygame.K_DOWN]:
-        bottom = player2_rect.bottom
-        centerx = player2_rect.centerx
-        player2_rect.size = (CROUCH_WIDTH, CROUCH_HEIGHT)
-        player2_rect.centerx = centerx
-        player2_rect.bottom = bottom
-
-    else:
-        bottom = player2_rect.bottom
-        centerx = player2_rect.centerx
-        player2_rect.size = (PLAYER_WIDTH, PLAYER_HEIGHT)
-        player2_rect.centerx = centerx
-        player2_rect.bottom = bottom
-
-
-    #COLLISION LOGIC TBD
-    if player1_rect.colliderect(player2_rect):
-        pass
-
-    # lock players to floor
-    player1_rect.bottom = FLOOR_Y
-    player2_rect.bottom = FLOOR_Y
-
-    # Draw
-    display_surface.fill(BACKGROUND_COLOR)  # Set BG color
-
-    # draw floor
+    # RENDERING
+    # Draw background
+    display_surface.blit(background, (0, 0))
+    # Draw floor
     pygame.draw.rect(display_surface, GREEN, (0, FLOOR_Y, SCREEN_WIDTH, FLOOR_HEIGHT))
 
-    # draw players
-    pygame.draw.rect(display_surface, BLUE, player1_rect)
-    pygame.draw.rect(display_surface, RED, player2_rect)
-
+    # GAME LOGIC
+    # Update knight movement and state
+    knight_test.move(SCREEN_WIDTH, SCREEN_HEIGHT)
+    # Draw knight sprite
+    knight_test.draw(display_surface)
+    # Present the rendered frame
     pygame.display.update()
 
 pygame.quit()
