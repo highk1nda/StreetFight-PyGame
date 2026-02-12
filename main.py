@@ -5,8 +5,8 @@ from fighter import Fighter
 pygame.init()
 
 # Screen setup
-SCREEN_WIDTH = 1520
-SCREEN_HEIGHT = 820
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
 FPS = 60
 display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Skjoldd")
@@ -28,7 +28,7 @@ KNIGHT_DATA = [KNIGHT_SIZE, KNIGHT_SCALE, KNIGHT_OFFSET]  # 0 - size, 1 - scale,
 clock = pygame.time.Clock()
 
 # Floor settings
-FLOOR_Y = 720
+FLOOR_Y = 620
 FLOOR_HEIGHT = 100
 
 # Player settings
