@@ -5,9 +5,10 @@ from src.modules.fighter.fighter import Fighter
 # Initialize pygame
 pygame.init()
 
-screen_info = pygame.display.Info()
-WIDTH = screen_info.current_w
-HEIGHT = screen_info.current_h
+# screen_info = pygame.display.Info()
+# WIDTH = screen_info.current_w
+# HEIGHT = screen_info.current_h
+WIDTH, HEIGHT = 1920, 1080
 # Screen setup
 SCREEN_WIDTH = WIDTH
 SCREEN_HEIGHT = HEIGHT
@@ -24,7 +25,7 @@ GREEN = (26, 66, 28)
 
 # define knight variables - frame size
 KNIGHT_SIZE = 100
-KNIGHT_SCALE = 20  # DO NOT INCREASE ABOVE 100
+KNIGHT_SCALE = 15  # DO NOT INCREASE ABOVE 100
 KNIGHT_OFFSET = [40, 37]
 KNIGHT_DATA = [KNIGHT_SIZE, KNIGHT_SCALE, KNIGHT_OFFSET]  # 0 - size, 1 - scale, 2 - offset
 
@@ -32,8 +33,8 @@ KNIGHT_DATA = [KNIGHT_SIZE, KNIGHT_SCALE, KNIGHT_OFFSET]  # 0 - size, 1 - scale,
 clock = pygame.time.Clock()
 
 # Floor settings
-FLOOR_Y = 1300
-FLOOR_HEIGHT = 800
+FLOOR_Y = 920
+FLOOR_HEIGHT = 200 #Thikness
 
 # Player settings
 speed = 5
@@ -119,8 +120,8 @@ while running:
 
     # GAME LOGIC
     # Update knight movement and state
-    knight_test.move(SCREEN_WIDTH, 1200, PLAYER_1)
-    were_test.move(SCREEN_WIDTH, 1200, PLAYER_2)
+    knight_test.move(SCREEN_WIDTH, 920, PLAYER_1)
+    were_test.move(SCREEN_WIDTH, 920, PLAYER_2)
 
 
     # Update knight
