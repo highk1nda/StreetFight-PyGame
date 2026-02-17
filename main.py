@@ -1,18 +1,22 @@
 import pygame
-from fighter import Fighter
+
+from src.modules.fighter.fighter import Fighter
 
 # Initialize pygame
 pygame.init()
 
+screen_info = pygame.display.Info()
+WIDTH = screen_info.current_w
+HEIGHT = screen_info.current_h
 # Screen setup
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+SCREEN_WIDTH = WIDTH
+SCREEN_HEIGHT = HEIGHT
 FPS = 60
 display_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Skjoldd")
 
 # Load background image
-background = pygame.image.load("forest.jpg").convert()  # BG for TEST_ONLY
+background = pygame.image.load("assets/forest.jpg").convert()  # BG for TEST_ONLY
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Define colors
@@ -20,7 +24,7 @@ GREEN = (26, 66, 28)
 
 # define knight variables - frame size
 KNIGHT_SIZE = 100
-KNIGHT_SCALE = 10  # DO NOT INCREASE ABOVE 100
+KNIGHT_SCALE = 20  # DO NOT INCREASE ABOVE 100
 KNIGHT_OFFSET = [40, 37]
 KNIGHT_DATA = [KNIGHT_SIZE, KNIGHT_SCALE, KNIGHT_OFFSET]  # 0 - size, 1 - scale, 2 - offset
 
@@ -28,8 +32,8 @@ KNIGHT_DATA = [KNIGHT_SIZE, KNIGHT_SCALE, KNIGHT_OFFSET]  # 0 - size, 1 - scale,
 clock = pygame.time.Clock()
 
 # Floor settings
-FLOOR_Y = 620
-FLOOR_HEIGHT = 100
+FLOOR_Y = 1300
+FLOOR_HEIGHT = 800
 
 # Player settings
 speed = 5
@@ -46,18 +50,25 @@ player2_rect = pygame.Rect(600, FLOOR_Y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HE
 
 # Load spritesheets
 knight = pygame.image.load(
-    "Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight.png").convert_alpha()  # load the png sheet
+    "assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight.png").convert_alpha()  # load the png sheet
 # Define amount of animation steps
 KNIGHT_ANIMATION_STEPS = [6, 8, 7, 10, 11, 4, 4, 4]  # x,y,z <-> frames per row in sheet
 ARM_ORC_ANIMATION_STEPS = [6, 8, 7, 8, 9, 4, 4, 4]
-knight_y = FLOOR_Y - PLAYER_HEIGHT
+
+knight_y = FLOOR_Y
+werebear = pygame.image.load(
+    "assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Werebear/Werebear/Werebear.png").convert_alpha()
+WEREBEAR_ANIMATION_STEPS = [6, 8, 9, 13, 9, 4, 4]
+were_test = Fighter(PLAYER_WIDTH, knight_y, KNIGHT_DATA, werebear, WEREBEAR_ANIMATION_STEPS)
+
+
 # assign knight_test to be part of class Fighter
 knight_test = Fighter(PLAYER_WIDTH, knight_y, KNIGHT_DATA, knight, KNIGHT_ANIMATION_STEPS)
 
 # knight2 = pygame.image.load(
 #     "Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight.png").convert_alpha()  # load the png sheet
 knight2 = pygame.image.load(
-    "Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Armored Orc/Armored Orc/Armored Orc.png").convert_alpha()
+    "assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Armored Orc/Armored Orc/Armored Orc.png").convert_alpha()
 
 knight2_test = Fighter(SCREEN_WIDTH - PLAYER_WIDTH * 2, 10, KNIGHT_DATA, knight2, ARM_ORC_ANIMATION_STEPS)
 
@@ -81,11 +92,11 @@ knight2_test = Fighter(SCREEN_WIDTH - PLAYER_WIDTH * 2, 10, KNIGHT_DATA, knight2
 
 PLAYER_1 = 0
 PLAYER_2 = 1
-background_music = pygame.mixer.Sound("sfx/Royalty Free Epic Celtic Fantasy Music - Highland Song.mp3")
+background_music = pygame.mixer.Sound("assets/sfx/Royalty Free Epic Celtic Fantasy Music - Highland Song.mp3")
 background_music.set_volume(0.2)
 background_music.play()
 
-forest_sfx = pygame.mixer.Sound("sfx/forest-ambience-296528.mp3")
+forest_sfx = pygame.mixer.Sound("assets/sfx/forest-ambience-296528.mp3")
 forest_sfx.set_volume(0.1)
 forest_sfx.play()
 
@@ -108,15 +119,16 @@ while running:
 
     # GAME LOGIC
     # Update knight movement and state
-    knight_test.move(SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_1)
-    knight2_test.move(SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_2)
+    knight_test.move(SCREEN_WIDTH, 1200, PLAYER_1)
+    were_test.move(SCREEN_WIDTH, 1200, PLAYER_2)
+
 
     # Update knight
     knight_test.update()
-    knight2_test.update()
+    were_test.update()
     # Draw knight sprite
     knight_test.draw(display_surface)
-    knight2_test.draw(display_surface)
+    were_test.draw(display_surface)
     # Present the rendered frame
     pygame.display.update()
 

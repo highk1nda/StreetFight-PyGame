@@ -23,13 +23,15 @@ class Fighter():
         self.hit = False
         self.death = False
         self.walk_sound = pygame.mixer.Sound(
-            "sfx/knight-right-footstep-on-gravel-4-with-chainmail-101937.mp3"
+            "assets/sfx/knight-right-footstep-on-gravel-4-with-chainmail-101937.mp3"
         )
-        self.sword_attack1_sound = pygame.mixer.Sound("sfx/sword_sfx/sword-slice-393847.mp3")
-        self.sword_attack2_sound = pygame.mixer.Sound("sfx/sword_sfx/sword-slashing-game-sound-effect-1-379228.mp3")
-        self.sword_attack3_sound = pygame.mixer.Sound("sfx/sword_sfx/short-fire-whoosh_1-317280.mp3")
-        self.sword_attack4_sound = pygame.mixer.Sound("sfx/sword_sfx/fire-breath-6922.mp3")
-        self.orc_attack_sound = pygame.mixer.Sound("sfx/sword_sfx/character-falling-on-ground-250069.mp3")
+        self.sword_attack1_sound = pygame.mixer.Sound("assets/sfx/sword_sfx/sword-slice-393847.mp3")
+        self.sword_attack2_sound = pygame.mixer.Sound(
+            "assets/sfx/sword_sfx/sword-slashing-game-sound-effect-1-379228.mp3")
+        self.sword_attack3_sound = pygame.mixer.Sound("assets/sfx/sword_sfx/short-fire-whoosh_1-317280.mp3")
+        self.sword_attack4_sound = pygame.mixer.Sound("assets/sfx/sword_sfx/fire-breath-6922.mp3")
+        self.orc_attack_sound = pygame.mixer.Sound(
+            "assets/sfx/sword_sfx/character-falling-on-ground-250069.mp3")
         self.walk_sound.set_volume(0.2)
         self.sword_attack1_sound.set_volume(0.4)
         self.sword_attack2_sound.set_volume(0.2)
@@ -117,7 +119,7 @@ class Fighter():
         # Attack binds
         if PLAYER == 1:
             if not self.attacking:
-                if key[pygame.K_COMMA]:
+                if key[pygame.K_RCTRL]:
                     self.attacking = True
                     self.attack_type = 1
                     self.attack_sound_played = False
