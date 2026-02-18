@@ -1,4 +1,6 @@
 import pygame
+from src.modules.fighter.render import load_animation_frames, update_fighter_animation
+from src.modules.sfx.sound_loader import load_fighter_sounds
 
 
 class Fighter():
@@ -7,8 +9,12 @@ class Fighter():
         self.image_scale = data[1]
         self.offset = data[2]
         self.flip = False
-        self.animation_list = self.load_images(sprite_sheet,
-                                               animation_steps)  # Load in the sheet straight away. List of lists of animations
+        self.animation_list = load_animation_frames(
+            sprite_sheet,
+            self.size,
+            self.image_scale,
+            animation_steps
+        )  # Load in the sheet straight away. List of lists of animations
         self.action = 0  # 0 - IDLE 1 - Walk
         self.frame_index = 0
         self.image = self.animation_list[self.action][self.frame_index]
@@ -22,36 +28,17 @@ class Fighter():
         self.health = 100
         self.hit = False
         self.death = False
-        self.walk_sound = pygame.mixer.Sound(
-            "assets/sfx/knight-right-footstep-on-gravel-4-with-chainmail-101937.mp3"
-        )
-        self.sword_attack1_sound = pygame.mixer.Sound("assets/sfx/sword_sfx/sword-slice-393847.mp3")
-        self.sword_attack2_sound = pygame.mixer.Sound(
-            "assets/sfx/sword_sfx/sword-slashing-game-sound-effect-1-379228.mp3")
-        self.sword_attack3_sound = pygame.mixer.Sound("assets/sfx/sword_sfx/short-fire-whoosh_1-317280.mp3")
-        self.sword_attack4_sound = pygame.mixer.Sound("assets/sfx/sword_sfx/fire-breath-6922.mp3")
-        self.orc_attack_sound = pygame.mixer.Sound(
-            "assets/sfx/sword_sfx/character-falling-on-ground-250069.mp3")
-        self.walk_sound.set_volume(0.2)
-        self.sword_attack1_sound.set_volume(0.4)
-        self.sword_attack2_sound.set_volume(0.2)
-        self.sword_attack3_sound.set_volume(0.15)
+        self.sounds = load_fighter_sounds()
+
+        self.walk_sound = self.sounds["walk"]
+        self.sword_attack1_sound = self.sounds["attack1"]
+        self.sword_attack2_sound = self.sounds["attack2"]
+        self.sword_attack3_sound = self.sounds["attack3"]
+        self.sword_attack4_sound = self.sounds["attack4"]
+        self.orc_attack_sound = self.sounds["orc_attack"]
+
         self.walk_sound_playing = False
         self.attack_sound_played = False
-
-    def load_images(self, sprite_sheet, animation_steps):
-        # extract images from sprite sheet
-        animation_list = []  # A list that contains lists of rows from a sprite sheet
-        for y, animation in enumerate(animation_steps):
-            temp_img_list = []
-            for x in range(animation):
-                temp_img = sprite_sheet.subsurface(x * self.size, y * self.size, self.size, self.size)
-                temp_img_list.append(
-                    pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale)))
-            animation_list.append(temp_img_list)
-            # print(animation_list)
-
-        return animation_list
 
     def move(self, SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER):
         SPEED = 6
@@ -180,30 +167,7 @@ class Fighter():
 
     # animation loop
     def update(self):
-        animation_cooldown = 110  # change image frame every 110ms
-        if self.attacking:
-            if self.attack_type == 1:
-                self.update_action(2)  # attack type 1
-            elif self.attack_type == 2:
-                self.update_action(3)  # attack type 2
-            elif self.attack_type == 3:
-                self.update_action(4)  # attack type 3
-
-        elif self.running == True:
-            self.update_action(1)  # walk
-        else:
-            self.update_action(0)  # idle
-
-        self.image = self.animation_list[self.action][self.frame_index]
-        # check if enough time has passed since the last update
-        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
-            self.frame_index += 1
-            self.update_time = pygame.time.get_ticks()
-        if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
-            if self.attacking:
-                self.attacking = False
-                self.attack_sound_played = False
+        update_fighter_animation(self)  # Update fighter animation & attack states
 
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.flip, False)
@@ -218,6 +182,7 @@ class Fighter():
             # update the current animation
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
+# Legacy code, don't mind
 #     # Player 1 crouch (S)
 #     if keys[pygame.K_s]:
 #         bottom = player1_rect.bottom

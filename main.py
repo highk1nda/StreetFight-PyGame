@@ -60,18 +60,18 @@ knight_y = FLOOR_Y
 werebear = pygame.image.load(
     "assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Werebear/Werebear/Werebear.png").convert_alpha()
 WEREBEAR_ANIMATION_STEPS = [6, 8, 9, 13, 9, 4, 4]
-were_test = Fighter(PLAYER_WIDTH, knight_y, KNIGHT_DATA, werebear, WEREBEAR_ANIMATION_STEPS)
+were_test = Fighter(SCREEN_WIDTH - 2*PLAYER_WIDTH, knight_y, KNIGHT_DATA, werebear, WEREBEAR_ANIMATION_STEPS)
 
 
 # assign knight_test to be part of class Fighter
-knight_test = Fighter(PLAYER_WIDTH, knight_y, KNIGHT_DATA, knight, KNIGHT_ANIMATION_STEPS)
+knight_test = Fighter(1/2*PLAYER_WIDTH, knight_y, KNIGHT_DATA, knight, KNIGHT_ANIMATION_STEPS)
 
 # knight2 = pygame.image.load(
 #     "Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight.png").convert_alpha()  # load the png sheet
 knight2 = pygame.image.load(
     "assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Armored Orc/Armored Orc/Armored Orc.png").convert_alpha()
 
-knight2_test = Fighter(SCREEN_WIDTH - PLAYER_WIDTH * 2, 10, KNIGHT_DATA, knight2, ARM_ORC_ANIMATION_STEPS)
+knight2_test = Fighter(SCREEN_WIDTH- PLAYER_WIDTH * 2, 10, KNIGHT_DATA, knight2, ARM_ORC_ANIMATION_STEPS)
 
 # PLAYER_1 = {
 #     "left": pygame.K_a,
